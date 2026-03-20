@@ -3,6 +3,8 @@ import { getImageUrl } from '../../system/helper.js'
 
 const apiNaze = 'https://api.naze.biz.id'
 const nazeKey = 'nz-6f568e3e62'
+const apiDanzy = 'https://api.danzy.web.id/api'
+const danzyKey = process.env.DANZY_API_KEY || 'isi_apikey_disini'
 const dl = async (url) => (await axios.get(url)).data
 
 export default (ev) => {
@@ -220,7 +222,7 @@ export default (ev) => {
       if (!args[0]) return xp.sendMessage(chat.id, { text: `Contoh: .${cmd} https://www.facebook.com/xxx` }, { quoted: m })
       await xp.sendMessage(chat.id, { react: { text: '⏳', key: m.key } })
       try {
-        const res = await axios.get(`https://api.danzy.web.id/api/download/facebook?url=${encodeURIComponent(args[0])}`)
+        const res = await axios.get(`${apiDanzy}/download/facebook?url=${encodeURIComponent(args[0])}&apikey=${danzyKey}`)
         if (res.data.status && res.data.data) {
           await xp.sendMessage(chat.id, { video: { url: res.data.data.hd || res.data.data.sd } }, { quoted: m })
         }
